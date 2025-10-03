@@ -1,25 +1,21 @@
-/ppe-puy-du-fou
-│
-├── /app
-│   ├── /Controllers        # Contrôleurs : gèrent les requêtes et appellent les modèles
+## Structure du projet
+
+ppe-puy-du-fou/
+├── app/
+│   ├── Controllers/
 │   │   └── UserController.php
-│   │
-│   ├── /Models             # Modèles : logique métier et gestion des données
+│   ├── Models/
 │   │   └── User.php
-│   │
-│   ├── /Views              # Vues : affichage des données à l’utilisateur
-│   │   └── /user
+│   ├── Views/
+│   │   └── user/
 │   │       └── profile.php
-│   │
-│   └── /Core               # Classes de base (Controller, Router)
+│   └── Core/
 │       ├── Controller.php
 │       └── Router.php
-│
-├── /config                 # Configuration du site et base de données
+├── config/
 │   └── database.php
-│
-├── /public                 # Fichiers accessibles publiquement (front controller, CSS, JS)
+├── public/
 │   ├── index.php
-│   └── /css
+│   └── css/
 │       └── style.css
-└── .htaccess               # Réécriture d’URL pour URLs propres
+└── .htaccess
