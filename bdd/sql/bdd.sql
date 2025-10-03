@@ -1,7 +1,7 @@
 CREATE TABLE Utilisateur(
    id_utilisateur INT AUTO_INCREMENT,
    email VARCHAR(50)  NOT NULL,
-   mot_de_passe VARCHAR(50)  NOT NULL,
+   mot_de_passe VARCHAR(255)  NOT NULL,
    nom VARCHAR(50)  NOT NULL,
    prenom VARCHAR(50)  NOT NULL,
    type_profil VARCHAR(50)  NOT NULL,
@@ -50,20 +50,19 @@ CREATE TABLE Seance(
 );
 
 CREATE TABLE Parcours(
-   id_visite INT,
    id_parcours INT AUTO_INCREMENT,
    duree TIME,
-   PRIMARY KEY(id_visite, id_parcours),
+   id_visite INT NOT NULL,
+   PRIMARY KEY(id_parcours),
    FOREIGN KEY(id_visite) REFERENCES Visite(id_visite)
 );
 
 CREATE TABLE Etape(
    id_etape INT AUTO_INCREMENT,
-   id_visite INT NOT NULL,
    id_parcours INT NOT NULL,
    id_seance INT NOT NULL,
    PRIMARY KEY(id_etape),
-   FOREIGN KEY(id_visite, id_parcours) REFERENCES Parcours(id_visite, id_parcours),
+   FOREIGN KEY(id_parcours) REFERENCES Parcours(id_parcours),
    FOREIGN KEY(id_seance) REFERENCES Seance(id_seance)
 );
 
