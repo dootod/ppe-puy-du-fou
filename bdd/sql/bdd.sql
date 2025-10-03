@@ -1,7 +1,7 @@
 CREATE TABLE Utilisateur(
    id_utilisateur INT AUTO_INCREMENT,
    email VARCHAR(50)  NOT NULL,
-   mot_de_passe VARCHAR(50)  NOT NULL,
+   mot_de_passe VARCHAR(255)  NOT NULL,
    nom VARCHAR(50)  NOT NULL,
    prenom VARCHAR(50)  NOT NULL,
    type_profil VARCHAR(50)  NOT NULL,
