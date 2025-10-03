@@ -2,20 +2,12 @@
 ppe-puy-du-fou/
 ├── app/
 │   ├── Controllers/
-│   │   └── UserController.php
 │   ├── Models/
-│   │   └── User.php
-│   ├── Views/
-│   │   └── user/
-│   │       └── profile.php
-│   └── Core/
-│       ├── Controller.php
-│       └── Router.php
+│   └── Views/
 ├── config/
-│   └── database.php
 ├── public/
 │   ├── index.php
 │   └── css/
-│       └── style.css
-└── .htaccess
+├── .htaccess
+
 ```
