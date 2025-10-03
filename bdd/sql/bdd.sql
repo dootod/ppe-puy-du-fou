@@ -1,29 +1,29 @@
 CREATE TABLE Utilisateur(
-   id_utilisateur COUNTER,
-   email VARCHAR(50) NOT NULL,
-   mot_de_passe VARCHAR(50) NOT NULL,
-   nom VARCHAR(50) NOT NULL,
-   prenom VARCHAR(50) NOT NULL,
-   type_profil VARCHAR(50) NOT NULL,
-   vitesse_marche DECIMAL(15,2) NOT NULL,
+   id_utilisateur INT AUTO_INCREMENT,
+   email VARCHAR(50)  NOT NULL,
+   mot_de_passe VARCHAR(50)  NOT NULL,
+   nom VARCHAR(50)  NOT NULL,
+   prenom VARCHAR(50)  NOT NULL,
+   type_profil VARCHAR(50)  NOT NULL,
+   vitesse_marche DECIMAL(15,2)   NOT NULL,
    PRIMARY KEY(id_utilisateur)
 );
 
 CREATE TABLE Lieu(
-   id_lieu COUNTER,
-   coordonnees_gps VARCHAR(50) NOT NULL,
+   id_lieu INT AUTO_INCREMENT,
+   coordonnees_gps VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_lieu)
 );
 
 CREATE TABLE Jours(
-   id_jours VARCHAR(50),
+   id_jours VARCHAR(50) ,
    heure_ouverture TIME,
    heure_fermeture TIME,
    PRIMARY KEY(id_jours)
 );
 
 CREATE TABLE Visite(
-   id_visite COUNTER,
+   id_visite INT AUTO_INCREMENT,
    date_ DATE,
    id_utilisateur INT NOT NULL,
    PRIMARY KEY(id_visite),
@@ -31,8 +31,8 @@ CREATE TABLE Visite(
 );
 
 CREATE TABLE Spectacle(
-   id_spectacle COUNTER,
-   libelle VARCHAR(50) NOT NULL,
+   id_spectacle INT AUTO_INCREMENT,
+   libelle VARCHAR(50)  NOT NULL,
    duree_spectacle TIME NOT NULL,
    duree_attente TIME NOT NULL,
    id_lieu INT NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE Spectacle(
 );
 
 CREATE TABLE Seance(
-   id_seance COUNTER,
+   id_seance INT AUTO_INCREMENT,
    heure_debut TIME,
    heure_fin TIME,
    id_spectacle INT NOT NULL,
@@ -51,14 +51,14 @@ CREATE TABLE Seance(
 
 CREATE TABLE Parcours(
    id_visite INT,
-   id_parcours COUNTER,
+   id_parcours INT AUTO_INCREMENT,
    duree TIME,
    PRIMARY KEY(id_visite, id_parcours),
    FOREIGN KEY(id_visite) REFERENCES Visite(id_visite)
 );
 
 CREATE TABLE Etape(
-   id_etape COUNTER,
+   id_etape INT AUTO_INCREMENT,
    id_visite INT NOT NULL,
    id_parcours INT NOT NULL,
    id_seance INT NOT NULL,
