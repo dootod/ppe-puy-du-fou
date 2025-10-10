@@ -5,7 +5,7 @@ CREATE TABLE Utilisateur(
    nom VARCHAR(50)  NOT NULL,
    prenom VARCHAR(50)  NOT NULL,
    type_profil VARCHAR(50)  NOT NULL,
-   vitesse_marche DECIMAL(15,2)   NOT NULL,
+   vitesse_marche DECIMAL(15,2)  ,
    PRIMARY KEY(id_utilisateur)
 );
 
