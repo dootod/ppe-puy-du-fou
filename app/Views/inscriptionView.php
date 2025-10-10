@@ -7,6 +7,14 @@
 </head>
 <body>
     <form action="index.php?action=traiterInscription" method="post">
+
+        <?php
+        if (isset($_SESSION['erreurRegister'])) {
+            echo "<p>" . $_SESSION['erreurRegister'] . "</p>";
+            unset($_SESSION['erreurRegister']);
+        }
+        ?>
+
         <div>
             <label for="nom">Nom</label>
             <input type="text" name="nom" id="nom" placeholder="Entrez votre nom" required>

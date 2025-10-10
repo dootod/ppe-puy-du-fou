@@ -2,6 +2,23 @@
 
 require_once __DIR__ . '/../../config/database.php';
 
+function utilisateurExistant($email) {
+
+    $pdo = getPDO();
+
+    $requete = $pdo->prepare("SELECT id_utilisateur FROM utilisateur WHERE email = :email");
+    $requete->execute(["email" => $email]);
+
+    $idUser = $requete->fetch();
+
+    if (!$idUser) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 function creerUtilisateur($nom, $prenom, $email, $mdp) {
 
     $pdo = getPDO();

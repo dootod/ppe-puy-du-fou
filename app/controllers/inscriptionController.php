@@ -13,8 +13,16 @@ function traiterInscription() {
         $email = trim($_POST['email']);
         $mdp = trim($_POST['mdp']);
 
+        $utilisateurExistant = utilisateurExistant($email);
+
+        if ($utilisateurExistant) {
+            $_SESSION['erreurRegister'] = "Cet email est déjà utilisé";
+            header('Location: index.php?action=afficherInscription');
+            exit;
+        }
+
         creerUtilisateur($nom, $prenom, $email, $mdp);
-        header('Location: index.php?action=afficherInscription');
+        header('Location: index.php?action=afficherConnexion');
         exit;
     }
 }
