@@ -28,6 +28,8 @@
         </div>
 
         <input type="submit" value="S'inscrire" name="inscription">
+
+        <p>Déjà un compte ? <a href="index.php?action=afficherConnexion">Se connecter</a></p>
     </form>
 </body>
 </html>

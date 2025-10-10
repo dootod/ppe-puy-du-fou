@@ -14,5 +14,7 @@ function traiterInscription() {
         $mdp = trim($_POST['mdp']);
 
         creerUtilisateur($nom, $prenom, $email, $mdp);
+        header('Location: index.php?action=afficherInscription');
+        exit;
     }
 }
