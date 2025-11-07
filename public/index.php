@@ -1,6 +1,10 @@
 <?php
-
 session_start();
+
+require_once __DIR__ . '/../app/MobileMiddleware.php';
+
+// Vérifier l'accès mobile AVANT tout traitement
+MobileMiddleware::checkMobileAccess();
 
 require_once __DIR__ . '/../app/controllers/inscriptionController.php';
 
