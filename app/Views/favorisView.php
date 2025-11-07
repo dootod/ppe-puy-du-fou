@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste - Puy du Fou</title>
+    <title>Favoris - Puy du Fou</title>
     <link rel="stylesheet" href="css/liste.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,13 +11,7 @@
     <div class="app-container">
         <header class="app-header">
             <div class="header-content">
-                <h1>
-                    <?php 
-                    if (!isset($_GET['filtre']) || $_GET['filtre'] == 'spectacles') echo 'SPECTACLES';
-                    elseif ($_GET['filtre'] == 'restaurants') echo 'RESTAURANTS';
-                    else echo 'TOILETTES';
-                    ?>
-                </h1>
+                <h1>MES FAVORIS</h1>
                 <div class="header-actions">
                     <i class="fas fa-search"></i>
                     <a href="index.php?action=afficherInscription" style="color: white; text-decoration: none;">
@@ -27,46 +21,34 @@
             </div>
         </header>
 
-        <nav class="filters-nav">
-            <div class="filters-container">
-                <a href="index.php?action=liste&filtre=spectacles" class="filter-btn <?php echo (!isset($_GET['filtre']) || $_GET['filtre'] == 'spectacles') ? 'active' : ''; ?>">
-                    <i class="fas fa-theater-masks"></i>
-                    <span>Spectacles</span>
-                </a>
-                <a href="index.php?action=liste&filtre=restaurants" class="filter-btn <?php echo (isset($_GET['filtre']) && $_GET['filtre'] == 'restaurants') ? 'active' : ''; ?>">
-                    <i class="fas fa-utensils"></i>
-                    <span>Restaurants</span>
-                </a>
-                <a href="index.php?action=liste&filtre=chiottes" class="filter-btn <?php echo (isset($_GET['filtre']) && $_GET['filtre'] == 'chiottes') ? 'active' : ''; ?>">
-                    <i class="fas fa-restroom"></i>
-                    <span>Toilettes</span>
-                </a>
-            </div>
-        </nav>
-
         <main class="main-content">
             <div class="content-wrapper">
-                <?php 
+                <?php
+                require_once __DIR__ . '/../controllers/favorisController.php';
+                $favoris = getFavoris();
+
                 if (isset($_SESSION['message'])) {
                     echo '<div class="message-success">' . $_SESSION['message'] . '</div>';
                     unset($_SESSION['message']);
                 }
 
-                if (isset($_SESSION['erreur'])) {
-                    echo '<div class="error-message">' . $_SESSION['erreur'] . '</div>';
-                    unset($_SESSION['erreur']);
-                }
-
-                if (empty($elements)): ?>
+                if (empty($favoris)): ?>
                     <div class="no-results">
-                        <i class="fas fa-search"></i>
-                        <p>Aucun résultat trouvé</p>
+                        <i class="fas fa-heart" style="color: #dc3545;"></i>
+                        <h3>Aucun favori</h3>
+                        <p>Ajoutez des spectacles et restaurants à vos favoris pour les retrouver facilement !</p>
+                        <a href="index.php?action=liste" class="btn btn-primary" style="margin-top: 15px;">
+                            <i class="fas fa-theater-masks"></i>
+                            Explorer les activités
+                        </a>
                     </div>
                 <?php else: ?>
-                    <?php foreach ($elements as $element): 
-                        $isFavori = isset($_SESSION['favoris']) && in_array($element['id'], $_SESSION['favoris']);
-                    ?>
-                        <div class="card" data-id="<?php echo $element['id']; ?>" id="<?php echo $element['categorie']; ?>-<?php echo $element['id']; ?>">
+                    <div class="favoris-stats">
+                        <p><?php echo count($favoris); ?> élément(s) dans vos favoris</p>
+                    </div>
+
+                    <?php foreach ($favoris as $element): ?>
+                        <div class="card favori-card" data-id="<?php echo $element['id']; ?>">
                             <div class="card-header">
                                 <div class="card-image" style="background: linear-gradient(135deg, 
                                     <?php 
@@ -92,9 +74,9 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="card-header-row">
+                                <div class="favori-header">
                                     <h3 class="card-title"><?php echo htmlspecialchars($element['titre']); ?></h3>
-                                    <a href="index.php?action=<?php echo $isFavori ? 'supprimerFavori' : 'ajouterFavori'; ?>&id=<?php echo $element['id']; ?>" class="btn-favori <?php echo $isFavori ? 'active' : ''; ?>">
+                                    <a href="index.php?action=supprimerFavori&id=<?php echo $element['id']; ?>" class="btn-favori active">
                                         <i class="fas fa-heart"></i>
                                     </a>
                                 </div>
@@ -139,7 +121,6 @@
                                     </div>
                                 <?php endif; ?>
                                 
-                                <!-- BOUTONS D'ACTION -->
                                 <div class="card-actions">
                                     <button class="details-btn" onclick="openModal(<?php echo $element['id']; ?>)">
                                         <span>Voir détails</span>
@@ -263,15 +244,6 @@
                                                 </div>
                                             </div>
                                         <?php endif; ?>
-                                        
-                                        <?php if ($element['categorie'] === 'spectacles'): ?>
-                                            <div class="info-section">
-                                                <h4><i class="fas fa-lightbulb"></i> Conseil du Puy du Fou</h4>
-                                                <div class="conseil-box">
-                                                    <p>Arrivez 15 minutes avant le début du spectacle pour avoir de bonnes places. Ce spectacle est très populaire !</p>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -279,9 +251,9 @@
                                         <i class="fas fa-times"></i>
                                         Fermer
                                     </button>
-                                    <a href="index.php?action=<?php echo $isFavori ? 'supprimerFavori' : 'ajouterFavori'; ?>&id=<?php echo $element['id']; ?>" class="btn btn-primary">
-                                        <i class="fas fa-heart"></i>
-                                        <?php echo $isFavori ? 'Retirer des favoris' : 'Ajouter aux favoris'; ?>
+                                    <a href="index.php?action=supprimerFavori&id=<?php echo $element['id']; ?>" class="btn btn-primary">
+                                        <i class="fas fa-heart-broken"></i>
+                                        Retirer des favoris
                                     </a>
                                     <a href="index.php?action=ajouterEtape&id=<?php echo $element['id']; ?>" class="btn btn-primary">
                                         <i class="fas fa-route"></i>
@@ -300,17 +272,17 @@
                 <i class="fas fa-map"></i>
                 <span>Carte</span>
             </a>
-            <a href="index.php?action=liste&filtre=spectacles" class="nav-item <?php echo (!isset($_GET['filtre']) || $_GET['filtre'] == 'spectacles') ? 'active' : ''; ?>">
+            <a href="index.php?action=liste&filtre=spectacles" class="nav-item">
                 <i class="fas fa-theater-masks"></i>
                 <span>Spectacles</span>
             </a>
-            <a href="index.php?action=liste&filtre=restaurants" class="nav-item <?php echo (isset($_GET['filtre']) && $_GET['filtre'] == 'restaurants') ? 'active' : ''; ?>">
+            <a href="index.php?action=liste&filtre=restaurants" class="nav-item">
                 <i class="fas fa-utensils"></i>
                 <span>Restaurants</span>
             </a>
-            <a href="index.php?action=itineraire" class="nav-item">
-                <i class="fas fa-route"></i>
-                <span>Itinéraire</span>
+            <a href="index.php?action=favoris" class="nav-item active">
+                <i class="fas fa-heart"></i>
+                <span>Favoris</span>
             </a>
             <a href="index.php?action=afficherInscription" class="nav-item">
                 <i class="fas fa-user"></i>

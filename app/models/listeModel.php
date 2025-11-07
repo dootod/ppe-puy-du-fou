@@ -1,91 +1,230 @@
 <?php
 class ListeModel {
     public function getElements($filtre) {
-        // Données complètes avec détails pour les modals
         $elements = [
+            // SPECTACLES
             [
                 'id' => 1,
-                'titre' => 'Vikings',
-                'description' => 'Spectacle épique sur les guerriers nordiques',
+                'titre' => 'Le Signe du Triomphe',
+                'description' => 'Spectacle de gladiateurs dans les arènes gallo-romaines',
                 'categorie' => 'spectacles',
-                'image' => 'vikings1.jpg',
-                'duree' => '1h30',
-                'horaires' => ['14:00', '17:00', '20:00'],
-                'emplacement' => 'Grand Théâtre Nordique',
-                'details' => 'Plongez au cœur de l\'âge viking avec ce spectacle époustouflant mettant en scène des combats réels, des effets spéciaux à couper le souffle et une histoire captivante.',
-                'prix' => '25€'
+                'image' => 'signe_triomphe.jpg',
+                'duree' => '35min',
+                'horaires' => ['11:30', '14:00', '16:30'],
+                'emplacement' => 'Arènes Gallo-Romaines',
+                'lat' => 46.8900,
+                'lng' => -0.9300,
+                'details' => 'Revivez l\'ambiance des grands jeux du cirque dans des arènes reconstituées. Gladiateurs, chars romains et effets spéciaux vous transportent au cœur de la Rome antique.',
+                'prix' => 'Inclus dans le billet'
             ],
             [
                 'id' => 2,
-                'titre' => 'Vikings',
-                'description' => 'Restaurant proposant une cuisine scandinave authentique',
-                'categorie' => 'restaurants',
-                'image' => 'vikings2.jpg',
-                'horaires' => '11:00 - 23:00',
-                'specialites' => ['Saumon fumé', 'Viande de renne', 'Soupe de poisson'],
-                'emplacement' => 'Place du Festin',
-                'details' => 'Dégustez une cuisine nordique authentique dans une ambiance de grande salle viking. Notre chef vous propose des plats traditionnels revisités.',
-                'prix_moyen' => '35€'
+                'titre' => 'Les Vikings',
+                'description' => 'Épopée maritime des guerriers nordiques',
+                'categorie' => 'spectacles',
+                'image' => 'vikings.jpg',
+                'duree' => '30min',
+                'horaires' => ['11:00', '13:30', '15:30', '17:30'],
+                'emplacement' => 'Théâtre sur l\'Eau',
+                'lat' => 46.8885,
+                'lng' => -0.9285,
+                'details' => 'Assistez au débarquement des drakkars vikings sur un lac de 4 hectares. Effets pyrotechniques et cascades spectaculaires vous plongent dans l\'univers des conquérants nordiques.',
+                'prix' => 'Inclus dans le billet'
             ],
             [
                 'id' => 3,
-                'titre' => 'Vikings',
-                'description' => 'Sanitaires décorés sur le thème viking',
-                'categorie' => 'chiottes',
-                'image' => 'vikings3.jpg',
-                'emplacement' => 'Près de la Grande Halle',
-                'details' => 'Des sanitaires propres et décorés dans le plus pur style viking. Profitez de notre espace raffiné pour une pause bien méritée.',
-                'services' => ['Toilettes', 'Points d\'eau', 'Espace bébé']
+                'titre' => 'Le Secret de la Lance',
+                'description' => 'Épopée médiévale avec cavaliers et effets spéciaux',
+                'categorie' => 'spectacles',
+                'image' => 'secret_lance.jpg',
+                'duree' => '30min',
+                'horaires' => ['12:00', '14:30', '16:00', '18:00'],
+                'emplacement' => 'Château Fort',
+                'lat' => 46.8915,
+                'lng' => -0.9260,
+                'details' => 'Plongez dans la Guerre de Cent Ans avec cette épopée mettant en scène des cavaliers acrobates, des combats à l\'épée et des effets spéciaux impressionnants.',
+                'prix' => 'Inclus dans le billet'
             ],
             [
                 'id' => 4,
-                'titre' => 'Vikings',
-                'description' => 'Exposition interactive sur la vie des Vikings',
+                'titre' => 'Mousquetaire de Richelieu',
+                'description' => 'Spectacle de cape et d\'épée au Grand Carrousel',
                 'categorie' => 'spectacles',
-                'image' => 'vikings4.jpg',
-                'duree' => '45min',
-                'horaires' => ['10:00', '13:00', '15:00', '18:00'],
-                'emplacement' => 'Hall des Découvertes',
-                'details' => 'Découvrez la vie quotidienne des Vikings à travers cette exposition interactive. Manipulez des reproductions d\'objets, essayez des costumes et participez à des ateliers.',
-                'prix' => '12€'
+                'image' => 'mousquetaire.jpg',
+                'duree' => '40min',
+                'horaires' => ['11:45', '14:15', '16:45'],
+                'emplacement' => 'Grand Carrousel',
+                'lat' => 46.8930,
+                'lng' => -0.9295,
+                'details' => 'Duel à l\'épée, voltige équestre et cascades dans la plus pure tradition des mousquetaires. Un spectacle rythmé par la musique baroque.',
+                'prix' => 'Inclus dans le billet'
             ],
             [
                 'id' => 5,
-                'titre' => 'Vikings',
-                'description' => 'Bar à hydromel et spécialités nordiques',
-                'categorie' => 'restaurants',
-                'image' => 'vikings5.jpg',
-                'horaires' => '16:00 - 02:00',
-                'specialites' => ['Hydromel maison', 'Bières artisanales', 'Tapas nordiques'],
-                'emplacement' => 'Quartier des Brasseurs',
-                'details' => 'Venez déguster notre sélection de boissons nordiques dans une ambiance chaleureuse. Notre hydromel est préparé selon une recette ancestrale.',
-                'prix_moyen' => '18€'
+                'titre' => 'Les Amoureux de Verdun',
+                'description' => 'Fresque historique sur la Première Guerre Mondiale',
+                'categorie' => 'spectacles',
+                'image' => 'verdun.jpg',
+                'duree' => '30min',
+                'horaires' => ['12:30', '15:00', '17:00'],
+                'emplacement' => 'Théâtre des Tranchées',
+                'lat' => 46.8870,
+                'lng' => -0.9310,
+                'details' => 'Une histoire d\'amour bouleversante au cœur des tranchées de 1916. Effets spéciaux, projections et décors réalistes vous immergent dans la Grande Guerre.',
+                'prix' => 'Inclus dans le billet'
             ],
             [
                 'id' => 6,
-                'titre' => 'Vikings',
-                'description' => 'Toilettes publiques au design scandinave',
-                'categorie' => 'chiottes',
-                'image' => 'vikings6.jpg',
-                'emplacement' => 'Entrée principale',
-                'details' => 'Des installations modernes dans un décor inspiré de l\'artisanat viking. Accessibles aux personnes à mobilité réduite.',
-                'services' => ['Toilettes', 'Distributeurs', 'Espace détente']
+                'titre' => 'Le Dernier Panache',
+                'description' => 'Spectacle scénique révolutionnaire',
+                'categorie' => 'spectacles',
+                'image' => 'dernier_panache.jpg',
+                'duree' => '32min',
+                'horaires' => ['11:15', '13:45', '16:15', '18:30'],
+                'emplacement' => 'Salle du Dernier Panache',
+                'lat' => 46.8920,
+                'lng' => -0.9320,
+                'details' => 'Vivez le destin tragique d\'un officier de marine durant la Révolution française. Scène rotative, effets d\'eau et mapping vidéo créent une expérience unique.',
+                'prix' => 'Inclus dans le billet'
             ],
             [
                 'id' => 7,
-                'titre' => 'Vikings',
-                'description' => 'Reconstitution historique de batailles vikings',
+                'titre' => 'Le Bal des Oiseaux Fantômes',
+                'description' => 'Volerie spectaculaire avec plus de 200 oiseaux',
                 'categorie' => 'spectacles',
-                'image' => 'vikings7.jpg',
-                'duree' => '1h15',
-                'horaires' => ['11:30', '15:30', '19:00'],
-                'emplacement' => 'Arène Centrale',
-                'details' => 'Assistez à une reconstitution fidèle de combats vikings avec des cascades impressionnantes et des effets pyrotechniques. Nos guerriers vous feront revivre l\'histoire.',
-                'prix' => '20€'
+                'image' => 'oiseaux_fantomes.jpg',
+                'duree' => '30min',
+                'horaires' => ['11:00', '13:30', '15:30', '17:30'],
+                'emplacement' => 'Théâtre des Oiseaux',
+                'lat' => 46.8895,
+                'lng' => -0.9250,
+                'details' => 'Admirez le ballet aérien de rapaces en liberté. Aigles, faucons, vautours et cigognes évoluent au-dessus des spectateurs dans un spectacle poétique.',
+                'prix' => 'Inclus dans le billet'
+            ],
+            [
+                'id' => 8,
+                'titre' => 'Les Noces de Feu',
+                'description' => 'Spectacle nocturne sur le Grand Lac',
+                'categorie' => 'spectacles',
+                'image' => 'noces_feu.jpg',
+                'duree' => '45min',
+                'horaires' => ['22:00'],
+                'emplacement' => 'Grand Lac',
+                'lat' => 46.8865,
+                'lng' => -0.9270,
+                'details' => 'La Cinescénie revisitée en version nocturne. Jeux d\'eau, feux d\'artifice, projections géantes et 2000 acteurs pour un spectacle grandiose.',
+                'prix' => 'Spectacle supplémentaire'
+            ],
+
+            // RESTAURANTS
+            [
+                'id' => 9,
+                'titre' => 'La Mijoterie du Roy',
+                'description' => 'Cuisine médiévale dans l\'ambiance d\'un banquet royal',
+                'categorie' => 'restaurants',
+                'image' => 'mijoterie_roy.jpg',
+                'horaires' => '11:30 - 15:00',
+                'emplacement' => 'Cité Médiévale',
+                'lat' => 46.8910,
+                'lng' => -0.9275,
+                'details' => 'Savourez des plats inspirés de la cuisine médiévale dans une salle voûtée authentique. Spécialités : rôtis, pâtés en croûte et hydromel.',
+                'prix_moyen' => '25€',
+                'specialites' => ['Rôti de sanglier', 'Tourte médiévale', 'Hydromel maison']
+            ],
+            [
+                'id' => 10,
+                'titre' => 'L\'Auberge',
+                'description' => 'Restaurant familial avec terrasse ombragée',
+                'categorie' => 'restaurants',
+                'image' => 'auberge.jpg',
+                'horaires' => '11:00 - 18:00',
+                'emplacement' => 'Village XVIIIème',
+                'lat' => 46.8905,
+                'lng' => -0.9290,
+                'details' => 'Cadre champêtre et cuisine traditionnelle française. Parfait pour une pause déjeuner en famille.',
+                'prix_moyen' => '18€',
+                'specialites' => ['Poulet rôti', 'Quiche lorraine', 'Tarte aux pommes']
+            ],
+            [
+                'id' => 11,
+                'titre' => 'Le Café de la Madelon',
+                'description' => 'Brasserie style 1900 avec spécialités régionales',
+                'categorie' => 'restaurants',
+                'image' => 'cafe_madelon.jpg',
+                'horaires' => '10:00 - 19:00',
+                'emplacement' => 'Place de la République',
+                'lat' => 46.8880,
+                'lng' => -0.9300,
+                'details' => 'Ambiance Belle Époque et cuisine du terroir. Essayez notre célèbre galette saucisse !',
+                'prix_moyen' => '22€',
+                'specialites' => ['Galette saucisse', 'Rillettes du Mans', 'Fondant au chocolat']
+            ],
+            [
+                'id' => 12,
+                'titre' => 'Les Délices de la Forêt',
+                'description' => 'Casse-croûte et snacks rapides',
+                'categorie' => 'restaurants',
+                'image' => 'delices_foret.jpg',
+                'horaires' => '10:00 - 17:00',
+                'emplacement' => 'Forêt Centrale',
+                'lat' => 46.8890,
+                'lng' => -0.9265,
+                'details' => 'Pour une pause rapide entre deux spectacles. Sandwiches, salades et boissons fraîches.',
+                'prix_moyen' => '12€',
+                'specialites' => ['Sandwich jambon-beurre', 'Salade César', 'Cookie maison']
+            ],
+
+            // TOILETTES
+            [
+                'id' => 13,
+                'titre' => 'Toilettes Principales',
+                'description' => 'Sanitaires avec accès PMR et espace change bébé',
+                'categorie' => 'chiottes',
+                'image' => 'toilettes_principales.jpg',
+                'emplacement' => 'Entrée Principale',
+                'lat' => 46.8935,
+                'lng' => -0.9315,
+                'details' => 'Sanitaires spacieux et bien entretenus. Accès personnes à mobilité réduite et table à langer.',
+                'services' => ['Toilettes', 'Points d\'eau', 'Espace bébé', 'Accès PMR']
+            ],
+            [
+                'id' => 14,
+                'titre' => 'Sanitaires Médiévaux',
+                'description' => 'Toilettes thématisées Moyen-Âge',
+                'categorie' => 'chiottes',
+                'image' => 'toilettes_medievales.jpg',
+                'emplacement' => 'Cité Médiévale',
+                'lat' => 46.8912,
+                'lng' => -0.9270,
+                'details' => 'Sanitaires décorés dans le style médiéval. Propres et bien équipés.',
+                'services' => ['Toilettes', 'Lavabos', 'Distributeur de serviettes']
+            ],
+            [
+                'id' => 15,
+                'titre' => 'Toilettes du Lac',
+                'description' => 'Sanitaires près du théâtre sur l\'eau',
+                'categorie' => 'chiottes',
+                'image' => 'toilettes_lac.jpg',
+                'emplacement' => 'Théâtre sur l\'Eau',
+                'lat' => 46.8880,
+                'lng' => -0.9280,
+                'details' => 'Idéalement situées près du spectacle des Vikings. Nombreuses cabines.',
+                'services' => ['Toilettes', 'Points d\'eau', 'Miroirs']
+            ],
+            [
+                'id' => 16,
+                'titre' => 'Sanitaires Arènes',
+                'description' => 'Toilettes près des arènes gallo-romaines',
+                'categorie' => 'chiottes',
+                'image' => 'toilettes_arenes.jpg',
+                'emplacement' => 'Arènes Gallo-Romaines',
+                'lat' => 46.8898,
+                'lng' => -0.9302,
+                'details' => 'Sanitaires modernes à proximité immédiate des arènes. Très pratiques avant/après le spectacle.',
+                'services' => ['Toilettes', 'Lavabos', 'Espace bébé', 'Sèche-mains']
             ]
         ];
         
-        // Filtrer par catégorie si spécifiée
         if ($filtre !== 'tous') {
             $elements = array_filter($elements, function($element) use ($filtre) {
                 return $element['categorie'] === $filtre;
@@ -103,6 +242,10 @@ class ListeModel {
             }
         }
         return null;
+    }
+
+    public function getAllPoints() {
+        return $this->getElements('tous');
     }
 }
 ?>

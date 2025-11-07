@@ -1,5 +1,5 @@
 <?php
-require_once 'listeModel.php';
+require_once __DIR__ . '/../models/listeModel.php';
 
 class ListeController {
     private $model;
@@ -12,7 +12,7 @@ class ListeController {
         $filtre = isset($_GET['filtre']) ? $_GET['filtre'] : 'spectacles';
         $elements = $this->model->getElements($filtre);
         
-        require_once 'listeView.php';
+        require_once __DIR__ . '/../Views/listeView.php';
     }
 }
 ?>
