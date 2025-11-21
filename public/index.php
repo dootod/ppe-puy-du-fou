@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../app/controllers/inscriptionController.php';
 require_once __DIR__ . '/../app/controllers/listeController.php';
 require_once __DIR__ . '/../app/controllers/favorisController.php';
 require_once __DIR__ . '/../app/controllers/itineraireController.php';
@@ -9,13 +8,13 @@ require_once __DIR__ . '/../app/controllers/itineraireController.php';
 $action = $_GET['action'] ?? 'carte';
 
 switch($action) {
-    case 'traiterInscription':
-        traiterInscription();
-        break;
+    // case 'traiterInscription':
+    //     traiterInscription();
+    //     break;
 
-    case 'afficherInscription':
-        afficherInscription();
-        break;
+    // case 'afficherInscription':
+    //     afficherInscription();
+    //     break;
 
     case 'afficherConnexion':
         header('Location: index.php?action=liste');
