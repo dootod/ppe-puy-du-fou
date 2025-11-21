@@ -6,6 +6,15 @@
     <title>Liste - Puy du Fou</title>
     <link rel="stylesheet" href="css/liste.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styles temporaires pour s'assurer que les détails sont masqués */
+        .card-details {
+            display: none;
+        }
+        .card-details.open {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -66,7 +75,7 @@
                     <?php foreach ($elements as $element): 
                         $isFavori = isset($_SESSION['favoris']) && in_array($element['id'], $_SESSION['favoris']);
                     ?>
-                        <div class="card" data-id="<?php echo $element['id']; ?>" id="<?php echo $element['categorie']; ?>-<?php echo $element['id']; ?>">
+                        <div class="card" data-id="<?php echo $element['id']; ?>">
                             <div class="card-header">
                                 <div class="card-image" style="background: linear-gradient(135deg, 
                                     <?php 
@@ -141,7 +150,7 @@
                                 
                                 <!-- BOUTONS D'ACTION -->
                                 <div class="card-actions">
-                                    <button class="details-btn" onclick="openModal(<?php echo $element['id']; ?>)">
+                                    <button class="details-btn" onclick="toggleDetails(<?php echo $element['id']; ?>)">
                                         <span>Voir détails</span>
                                         <i class="fas fa-chevron-down"></i>
                                     </button>
@@ -150,143 +159,136 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Modal -->
-                        <div class="modal" id="modal-<?php echo $element['id']; ?>">
-                            <div class="modal-backdrop" onclick="closeModal(<?php echo $element['id']; ?>)"></div>
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2><?php echo htmlspecialchars($element['titre']); ?></h2>
-                                    <button class="close-btn" onclick="closeModal(<?php echo $element['id']; ?>)">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="modal-image" style="background: linear-gradient(135deg, 
-                                        <?php echo $colors[($element['id']-1) % count($colors)]; ?>, 
-                                        <?php echo $colors[($element['id'] % count($colors))]; ?>)">
-                                        <div class="modal-image-overlay">
-                                            <h3><?php echo htmlspecialchars($element['titre']); ?></h3>
-                                            <p><?php echo $element['emplacement']; ?></p>
-                                        </div>
-                                    </div>
-                                    <div class="modal-info">
+                            <!-- SECTION DÉTAILS DÉPLIANTE - MASQUÉE PAR DÉFAUT -->
+                            <div class="card-details" id="details-<?php echo $element['id']; ?>">
+                                <div class="details-content">
+                                    <div class="details-section">
+                                        <h4><i class="fas fa-info-circle"></i> Description détaillée</h4>
                                         <p class="info-text"><?php echo htmlspecialchars($element['details']); ?></p>
-                                        
-                                        <?php if ($element['categorie'] === 'spectacles'): ?>
-                                            <div class="info-section">
-                                                <h4><i class="fas fa-info-circle"></i> Informations spectacle</h4>
-                                                <div class="info-grid">
-                                                    <div class="info-item">
-                                                        <i class="fas fa-clock"></i>
-                                                        <div>
-                                                            <strong>Durée</strong>
-                                                            <span><?php echo $element['duree']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <i class="fas fa-calendar"></i>
-                                                        <div>
-                                                            <strong>Horaires</strong>
-                                                            <span><?php echo implode(' - ', $element['horaires']); ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <i class="fas fa-map-marker-alt"></i>
-                                                        <div>
-                                                            <strong>Lieu</strong>
-                                                            <span><?php echo $element['emplacement']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <i class="fas fa-tag"></i>
-                                                        <div>
-                                                            <strong>Tarif</strong>
-                                                            <span><?php echo $element['prix']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php elseif ($element['categorie'] === 'restaurants'): ?>
-                                            <div class="info-section">
-                                                <h4><i class="fas fa-utensils"></i> Informations restaurant</h4>
-                                                <div class="info-grid">
-                                                    <div class="info-item">
-                                                        <i class="fas fa-clock"></i>
-                                                        <div>
-                                                            <strong>Horaires</strong>
-                                                            <span><?php echo $element['horaires']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <i class="fas fa-map-marker-alt"></i>
-                                                        <div>
-                                                            <strong>Emplacement</strong>
-                                                            <span><?php echo $element['emplacement']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <i class="fas fa-star"></i>
-                                                        <div>
-                                                            <strong>Spécialités</strong>
-                                                            <span><?php echo implode(', ', $element['specialites']); ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <i class="fas fa-euro-sign"></i>
-                                                        <div>
-                                                            <strong>Prix moyen</strong>
-                                                            <span><?php echo $element['prix_moyen']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php else: ?>
-                                            <div class="info-section">
-                                                <h4><i class="fas fa-info-circle"></i> Informations sanitaires</h4>
-                                                <div class="info-grid">
-                                                    <div class="info-item">
-                                                        <i class="fas fa-map-marker-alt"></i>
-                                                        <div>
-                                                            <strong>Emplacement</strong>
-                                                            <span><?php echo $element['emplacement']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <i class="fas fa-concierge-bell"></i>
-                                                        <div>
-                                                            <strong>Services</strong>
-                                                            <span><?php echo implode(', ', $element['services']); ?></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-                                        
-                                        <?php if ($element['categorie'] === 'spectacles'): ?>
-                                            <div class="info-section">
-                                                <h4><i class="fas fa-lightbulb"></i> Conseil du Puy du Fou</h4>
-                                                <div class="conseil-box">
-                                                    <p>Arrivez 15 minutes avant le début du spectacle pour avoir de bonnes places. Ce spectacle est très populaire !</p>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" onclick="closeModal(<?php echo $element['id']; ?>)">
-                                        <i class="fas fa-times"></i>
-                                        Fermer
-                                    </button>
-                                    <a href="index.php?action=<?php echo $isFavori ? 'supprimerFavori' : 'ajouterFavori'; ?>&id=<?php echo $element['id']; ?>" class="btn btn-primary">
-                                        <i class="fas fa-heart"></i>
-                                        <?php echo $isFavori ? 'Retirer des favoris' : 'Ajouter aux favoris'; ?>
-                                    </a>
-                                    <a href="index.php?action=ajouterEtape&id=<?php echo $element['id']; ?>" class="btn btn-primary">
-                                        <i class="fas fa-route"></i>
-                                        Ajouter à l'itinéraire
-                                    </a>
+
+                                    <?php if ($element['categorie'] === 'spectacles'): ?>
+                                        <div class="details-section">
+                                            <h4><i class="fas fa-info-circle"></i> Informations spectacle</h4>
+                                            <div class="details-grid">
+                                                <div class="detail-item">
+                                                    <i class="fas fa-clock"></i>
+                                                    <div>
+                                                        <strong>Durée</strong>
+                                                        <span><?php echo $element['duree']; ?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-calendar"></i>
+                                                    <div>
+                                                        <strong>Horaires</strong>
+                                                        <div class="horaires-list">
+                                                            <?php foreach ($element['horaires'] as $horaire): ?>
+                                                                <span class="horaire-badge"><?php echo $horaire; ?></span>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    <div>
+                                                        <strong>Lieu</strong>
+                                                        <span><?php echo $element['emplacement']; ?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-tag"></i>
+                                                    <div>
+                                                        <strong>Tarif</strong>
+                                                        <span><?php echo $element['prix']; ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php elseif ($element['categorie'] === 'restaurants'): ?>
+                                        <div class="details-section">
+                                            <h4><i class="fas fa-utensils"></i> Informations restaurant</h4>
+                                            <div class="details-grid">
+                                                <div class="detail-item">
+                                                    <i class="fas fa-clock"></i>
+                                                    <div>
+                                                        <strong>Horaires</strong>
+                                                        <span><?php echo $element['horaires']; ?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    <div>
+                                                        <strong>Emplacement</strong>
+                                                        <span><?php echo $element['emplacement']; ?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-star"></i>
+                                                    <div>
+                                                        <strong>Spécialités</strong>
+                                                        <div class="specialites-list">
+                                                            <?php foreach ($element['specialites'] as $specialite): ?>
+                                                                <span class="specialite-badge"><?php echo $specialite; ?></span>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-euro-sign"></i>
+                                                    <div>
+                                                        <strong>Prix moyen</strong>
+                                                        <span><?php echo $element['prix_moyen']; ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="details-section">
+                                            <h4><i class="fas fa-info-circle"></i> Informations sanitaires</h4>
+                                            <div class="details-grid">
+                                                <div class="detail-item">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    <div>
+                                                        <strong>Emplacement</strong>
+                                                        <span><?php echo $element['emplacement']; ?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-concierge-bell"></i>
+                                                    <div>
+                                                        <strong>Services</strong>
+                                                        <div class="services-list">
+                                                            <?php foreach ($element['services'] as $service): ?>
+                                                                <span class="service-badge"><?php echo $service; ?></span>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($element['categorie'] === 'spectacles'): ?>
+                                        <div class="details-section">
+                                            <h4><i class="fas fa-lightbulb"></i> Conseil du Puy du Fou</h4>
+                                            <div class="conseil-box">
+                                                <p>Arrivez 15 minutes avant le début du spectacle pour avoir de bonnes places. Ce spectacle est très populaire !</p>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <div class="details-actions">
+                                        <a href="index.php?action=<?php echo $isFavori ? 'supprimerFavori' : 'ajouterFavori'; ?>&id=<?php echo $element['id']; ?>" class="btn btn-primary">
+                                            <i class="fas fa-heart"></i>
+                                            <?php echo $isFavori ? 'Retirer des favoris' : 'Ajouter aux favoris'; ?>
+                                        </a>
+                                        <a href="index.php?action=ajouterEtape&id=<?php echo $element['id']; ?>" class="btn btn-primary">
+                                            <i class="fas fa-route"></i>
+                                            Ajouter à l'itinéraire
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -319,6 +321,6 @@
         </nav>
     </div>
 
-    <script src="js/listelavascript.js"></script>
+    <script src="js/liste.js"></script>
 </body>
 </html>

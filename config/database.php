@@ -1,6 +1,6 @@
 <?php
 
-function getDBConnection(){
+function getPDO(){
     $dbHost = 'localhost';
     $dbName = 'bdd';
     $dbUser = 'root';
