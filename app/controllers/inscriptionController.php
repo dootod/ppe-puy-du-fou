@@ -1,28 +1,69 @@
 <?php
+// app/controllers/inscriptionController.php
 
-require_once __DIR__ . '/../models/inscriptionModel.php';
+require_once __DIR__ . '/../models/UtilisateurModel.php';
 
 function afficherInscription() {
-    require_once __DIR__ . '/../Views/inscriptionView.php';
+    require_once __DIR__ . '/../views/inscription.php';
 }
 
 function traiterInscription() {
-    if (isset($_POST['inscription'])) {
-        $nom = trim($_POST['nom']);
-        $prenom = trim($_POST['prenom']);
-        $email = trim($_POST['email']);
-        $mdp = trim($_POST['mdp']);
-
-        $utilisateurExistant = utilisateurExistant($email);
-
-        if ($utilisateurExistant) {
-            $_SESSION['erreurRegister'] = "Cet email est déjà utilisé";
-            header('Location: index.php?action=afficherInscription');
-            exit;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'] ?? '';
+        $motDePasse = $_POST['mot_de_passe'] ?? '';
+        $confirmationMotDePasse = $_POST['confirmation_mot_de_passe'] ?? '';
+        $nom = $_POST['nom'] ?? '';
+        $prenom = $_POST['prenom'] ?? '';
+        $typeProfil = $_POST['type_profil'] ?? '';
+        $vitesseMarche = $_POST['vitesse_marche'] ?? null;
+        
+        $erreurs = [];
+        
+        // Validation
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $erreurs[] = "Email invalide";
         }
-
-        creerUtilisateur($nom, $prenom, $email, $mdp);
-        header('Location: index.php?action=afficherConnexion');
-        exit;
+        
+        if (empty($motDePasse) || strlen($motDePasse) < 6) {
+            $erreurs[] = "Le mot de passe doit contenir au moins 6 caractères";
+        }
+        
+        if ($motDePasse !== $confirmationMotDePasse) {
+            $erreurs[] = "Les mots de passe ne correspondent pas";
+        }
+        
+        if (empty($nom)) {
+            $erreurs[] = "Le nom est obligatoire";
+        }
+        
+        if (empty($prenom)) {
+            $erreurs[] = "Le prénom est obligatoire";
+        }
+        
+        if (empty($typeProfil)) {
+            $erreurs[] = "Le type de profil est obligatoire";
+        }
+        
+        if (emailExisteDeja($email)) {
+            $erreurs[] = "Cet email est déjà utilisé";
+        }
+        
+        if (empty($erreurs)) {
+            $success = creerUtilisateur($email, $motDePasse, $nom, $prenom, $typeProfil, $vitesseMarche);
+            
+            if ($success) {
+                $_SESSION['message'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+                header('Location: index.php?action=afficherConnexion');
+                exit();
+            } else {
+                $erreurs[] = "Erreur lors de l'inscription";
+            }
+        }
+        
+        // Afficher le formulaire avec les erreurs
+        require_once __DIR__ . '/../views/inscription.php';
+    } else {
+        afficherInscription();
     }
 }
+?>
