@@ -1,69 +1,28 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-    }
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 
-    footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        height: 180px;
-        background-color: #d1aa7d;
-        border-top: 5px solid #000;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    footer li {
-        list-style: none;
-        color: #000;
-        cursor: pointer;
-        flex: 1;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-    }
-
-    footer li a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        text-decoration: none;
-        color: inherit;
-    }
-
-    footer li .material-icons {
-        font-size: 100px;
-    }
-
-    footer li.center {
-        background-image: url('../../public/img/icon1.png');
-        background-size: 250px 235px;
-        background-repeat: no-repeat;
-        background-position: center center;
-        margin-bottom: 100; 
-        height: 200px;
-    }
-
-    footer li.center .spacer {
-        width: 250px;
-        height: 250px;
-        background: transparent;
-    }
-</style>
-
-<footer>
-    <li><a href="/"><i class="material-icons">home</i></a></li>
-    <li><a href="/map"><i class="material-icons">place</i></a></li>
-    <li class="center"><a href="/"><div class="spacer" aria-hidden="true"></div></a></li>
-    <li><a href="/calendar"><i class="material-icons">calendar_month</i></a></li>
-    <li><a href="/account"><i class="material-icons">account_circle</i></a></li>
-</footer>
+<nav class="bottom-navigation">
+    <a href="index.php?action=carte" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'carte') ? 'active' : ''; ?>">
+        <i class="fas fa-map"></i>
+        <span>Carte</span>
+    </a>
+    <a href="index.php?action=liste&filtre=spectacles" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'liste' && (!isset($_GET['filtre']) || $_GET['filtre'] == 'spectacles')) ? 'active' : ''; ?>">
+        <i class="fas fa-theater-masks"></i>
+        <span>Spectacles</span>
+    </a>
+    <a href="index.php?action=liste&filtre=restaurants" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'liste' && isset($_GET['filtre']) && $_GET['filtre'] == 'restaurants') ? 'active' : ''; ?>">
+        <i class="fas fa-utensils"></i>
+        <span>Restaurants</span>
+    </a>
+    <a href="index.php?action=itineraire" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'itineraire') ? 'active' : ''; ?>">
+        <i class="fas fa-route"></i>
+        <span>Itinéraire</span>
+    </a>
+    <a href="index.php?action=profil" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'profil') ? 'active' : ''; ?>">
+        <i class="fas fa-user"></i>
+        <span>Profil</span>
+    </a>
+</nav>

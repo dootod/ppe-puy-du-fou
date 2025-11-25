@@ -11,3 +11,8 @@ ppe-puy-du-fou/
 ├── .htaccess
 
 ```
+
+Clé API Google Maps
+```
+AIzaSyA85Lzv984wXGdhvm1Nm7ENEYOj965gZhQ
+```
