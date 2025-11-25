@@ -122,7 +122,7 @@ if (session_status() == PHP_SESSION_NONE) {
                                 <div class="detail-section">
                                     <h3><i class="fas fa-crown"></i> Fonctions administrateur</h3>
                                     <div class="admin-actions">
-                                        <a href="#" class="btn-admin">
+                                        <a href="index.php?action=admin_dashboard" class="btn-admin">
                                             <i class="fas fa-users-cog"></i>
                                             Panel de gestion
                                         </a>

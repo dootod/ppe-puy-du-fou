@@ -1,5 +1,11 @@
 <?php
-require_once __DIR__ . '/../../config/database.php';
+if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['SERVER_NAME'] == 'localhost') {
+    // Environnement local - depuis app/models/
+    require_once __DIR__ . '/../../config/database_puy.php';
+} else {
+    // Environnement de production/hebergé
+    require_once '/home/ewenevh/config/database_puy.php';
+}
 
 class ListeModel {
     
@@ -9,7 +15,7 @@ class ListeModel {
                 return $this->getSpectacles();
             case 'restaurants':
                 return $this->getRestaurants();
-            case 'chiottes':
+            case 'toilettes':
                 return $this->getToilettes();
             default:
                 return $this->getSpectacles();
@@ -19,6 +25,7 @@ class ListeModel {
     private function getSpectacles() {
         try {
             $pdo = getPDO();
+            
             $requete = $pdo->query("
                 SELECT 
                     s.id_spectacle as id,
@@ -26,20 +33,18 @@ class ListeModel {
                     s.duree_spectacle,
                     s.duree_attente,
                     l.coordonnees_gps
-                FROM Spectacle s
-                LEFT JOIN Lieu l ON s.id_lieu = l.id_lieu
+                FROM spectacle s
+                LEFT JOIN lieu l ON s.id_lieu = l.id_lieu
                 ORDER BY s.id_spectacle
             ");
             
             $spectacles = [];
             while ($row = $requete->fetch(PDO::FETCH_ASSOC)) {
-                // Récupérer les séances pour ce spectacle
                 $horaires = $this->getHorairesSpectacle($row['id']);
                 
-                // Convertir les coordonnées GPS
-                $coords = explode(',', $row['coordonnees_gps']);
-                $lat = isset($coords[0]) ? trim($coords[0]) : 46.8900;
-                $lng = isset($coords[1]) ? trim($coords[1]) : -0.9300;
+                $coords = $this->parseCoordonneesGPS($row['coordonnees_gps']);
+                $lat = $coords['lat'];
+                $lng = $coords['lng'];
                 
                 $spectacles[] = [
                     'id' => $row['id'],
@@ -49,8 +54,8 @@ class ListeModel {
                     'duree' => $this->formatDuree($row['duree_spectacle']),
                     'horaires' => $horaires,
                     'emplacement' => $this->getEmplacementSpectacle($row['titre']),
-                    'lat' => floatval($lat),
-                    'lng' => floatval($lng),
+                    'lat' => $lat,
+                    'lng' => $lng,
                     'details' => $this->getDetailsSpectacle($row['titre']),
                     'prix' => 'Inclus dans le billet'
                 ];
@@ -59,9 +64,27 @@ class ListeModel {
             return $spectacles;
             
         } catch (Exception $e) {
-            error_log("Erreur lors de la récupération des spectacles: " . $e->getMessage());
             return [];
         }
+    }
+    
+    private function parseCoordonneesGPS($coordonnees_gps) {
+        if (empty($coordonnees_gps)) {
+            return ['lat' => 46.8900, 'lng' => -0.9300];
+        }
+        
+        if (strpos($coordonnees_gps, ',') !== false) {
+            $coords = explode(',', $coordonnees_gps);
+            $lat = floatval(trim($coords[0] ?? 46.8900));
+            $lng = floatval(trim($coords[1] ?? -0.9300));
+            
+            return [
+                'lat' => $lat,
+                'lng' => $lng
+            ];
+        }
+        
+        return ['lat' => 46.8900, 'lng' => -0.9300];
     }
     
     private function getHorairesSpectacle($idSpectacle) {
@@ -69,7 +92,7 @@ class ListeModel {
             $pdo = getPDO();
             $requete = $pdo->prepare("
                 SELECT heure_debut 
-                FROM Seance 
+                FROM seance 
                 WHERE id_spectacle = :id_spectacle 
                 ORDER BY heure_debut
             ");
@@ -77,10 +100,9 @@ class ListeModel {
             
             $horaires = [];
             while ($row = $requete->fetch(PDO::FETCH_ASSOC)) {
-                $horaires[] = substr($row['heure_debut'], 0, 5); // Format HH:MM
+                $horaires[] = substr($row['heure_debut'], 0, 5);
             }
             
-            // Si pas d'horaires, mettre des horaires par défaut
             if (empty($horaires)) {
                 $horaires = ['11:00', '14:00', '16:30'];
             }
@@ -88,13 +110,11 @@ class ListeModel {
             return $horaires;
             
         } catch (Exception $e) {
-            error_log("Erreur lors de la récupération des horaires: " . $e->getMessage());
             return ['11:00', '14:00', '16:30'];
         }
     }
     
     private function getRestaurants() {
-        // Données avec vraies coordonnées GPS
         return [
             [
                 'id' => 12,
@@ -170,7 +190,7 @@ class ListeModel {
                 'emplacement' => 'Quartier Artisanal',
                 'lat' => 46.88751175161544,
                 'lng' => -0.931512156821394,
-                'details' => 'Découvrez nos viades rôties lentement à la broche selon les traditions culinaires françaises.',
+                'details' => 'Découvrez nos viandes rôties lentement à la broche selon les traditions culinaires françaises.',
                 'prix_moyen' => '25€',
                 'specialites' => ['Côte de bœuf', 'Poulet à la broche', 'Légumes rôtis']
             ],
@@ -191,13 +211,12 @@ class ListeModel {
     }
     
     private function getToilettes() {
-        // Données avec vraies coordonnées GPS
         return [
             [
                 'id' => 19,
                 'titre' => 'Toilettes Principales',
                 'description' => 'Sanitaires avec accès PMR et espace change bébé',
-                'categorie' => 'chiottes',
+                'categorie' => 'toilettes',
                 'emplacement' => 'Entrée Principale',
                 'lat' => 46.89189061974373,
                 'lng' => -0.9321954678062714,
@@ -208,7 +227,7 @@ class ListeModel {
                 'id' => 20,
                 'titre' => 'Toilettes Vikings',
                 'description' => 'Sanitaires thématisés près du spectacle des Vikings',
-                'categorie' => 'chiottes',
+                'categorie' => 'toilettes',
                 'emplacement' => 'Théâtre sur l\'Eau',
                 'lat' => 46.88759913402883,
                 'lng' => -0.9287146907371377,
@@ -219,7 +238,7 @@ class ListeModel {
                 'id' => 21,
                 'titre' => 'Toilettes Cité Médiévale',
                 'description' => 'Toilettes thématisées Moyen-Âge',
-                'categorie' => 'chiottes',
+                'categorie' => 'toilettes',
                 'emplacement' => 'Cité Médiévale',
                 'lat' => 46.88743377058037,
                 'lng' => -0.927113080715879,
@@ -230,7 +249,7 @@ class ListeModel {
                 'id' => 22,
                 'titre' => 'Toilettes Stade Gallo-Romain',
                 'description' => 'Sanitaires près des arènes gallo-romaines',
-                'categorie' => 'chiottes',
+                'categorie' => 'toilettes',
                 'emplacement' => 'Arènes Gallo-Romaines',
                 'lat' => 46.8853878847044,
                 'lng' => -0.927346847889757,
@@ -265,7 +284,7 @@ class ListeModel {
             'Le Secret de la Lance' => 'Plongez dans la Guerre de Cent Ans avec cette épopée mettant en scène des cavaliers acrobates, des combats à l\'épée et des effets spéciaux impressionnants.',
             'Mousquetaire de Richelieu' => 'Duel à l\'épée, voltige équestre et cascades dans la plus pure tradition des mousquetaires. Un spectacle rythmé par la musique baroque.',
             'Le Bal des Oiseaux Fantômes' => 'Admirez le vol de plus de 300 oiseaux rapaces dans un ballet aérien unique. Faucons, aigles et vautours évoluent au-dessus des spectateurs.',
-            'Les Noces de Feu' => 'La Cinescénie revisitée en version nocturne. Jeux d\'eau, feux d\'artifice, projections géantes et 2000 acteurs pour un spectacle grandiose.',
+            'Les Noces de Feu' => 'La Cinéscénie revisitée en version nocturne. Jeux d\'eau, feux d\'artifice, projections géantes et 2000 acteurs pour un spectacle grandiose.',
             'La Cinéscénie' => 'Spectacle nocturne monumental avec 2400 acteurs bénévoles sur une scène de 23 hectares. Retrace l\'histoire de la Vendée à travers les siècles.',
             'Le Premier Royaume' => 'Remontez le temps jusqu\'à l\'époque mérovingienne. Découvrez la naissance de la France avec Clovis et les premiers rois francs.',
             'Le Dernier Panache' => 'Suivez le destin héroïque du général Charette durant la Révolution française. Spectacle scénographique innovant.',
@@ -295,7 +314,6 @@ class ListeModel {
     }
     
     private function formatDuree($duree) {
-        // Convertir "00:45:00" en "45min"
         $parts = explode(':', $duree);
         if (count($parts) >= 2) {
             $heures = intval($parts[0]);
@@ -309,19 +327,29 @@ class ListeModel {
         }
         return '30min';
     }
-    
+
     public function getElementById($id) {
-        $elements = array_merge(
-            $this->getSpectacles(),
-            $this->getRestaurants(),
-            $this->getToilettes()
-        );
-        
-        foreach ($elements as $element) {
-            if ($element['id'] == $id) {
-                return $element;
+        $spectacles = $this->getSpectacles();
+        foreach ($spectacles as $spectacle) {
+            if ($spectacle['id'] == $id) {
+                return $spectacle;
             }
         }
+        
+        $restaurants = $this->getRestaurants();
+        foreach ($restaurants as $restaurant) {
+            if ($restaurant['id'] == $id) {
+                return $restaurant;
+            }
+        }
+        
+        $toilettes = $this->getToilettes();
+        foreach ($toilettes as $toilettes) {
+            if ($toilettes['id'] == $id) {
+                return $toilettes;
+            }
+        }
+        
         return null;
     }
 

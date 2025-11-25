@@ -1,0 +1,259 @@
+/* ===== STYLES ADMIN DE BASE ===== */
+.admin-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-header {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.admin-header h1 {
+    color: #800020;
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.admin-main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.admin-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.admin-card h2 {
+    color: #800020;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.admin-card p {
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.admin-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #800020, #a0022a);
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(128, 0, 32, 0.3);
+}
+
+.admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(128, 0, 32, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.admin-footer {
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 10px;
+    }
+    
+    .admin-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .admin-header h1 {
+        font-size: 2rem;
+    }
+    
+    .admin-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Styles pour les tables */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.table-container {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+    background-color: #800020;
+    color: white;
+    font-weight: bold;
+}
+
+.data-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Styles pour les formulaires */
+.form-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.spectacle-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #800020;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+/* Boutons */
+.btn-edit {
+    background-color: #2E8B57;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.btn-delete {
+    background-color: #DC143C;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.btn-edit:hover { background-color: #267A4A; }
+.btn-delete:hover { background-color: #C11232; }
+.btn-cancel:hover { background-color: #5a6268; }
+
+/* Alertes */
+.alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Utilitaires */
+.text-center {
+    text-align: center;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Navigation header */
+.admin-header nav {
+    margin-top: 0.5rem;
+}

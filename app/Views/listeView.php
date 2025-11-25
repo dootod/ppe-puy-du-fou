@@ -19,6 +19,62 @@ if (session_status() == PHP_SESSION_NONE) {
         .card-details.open {
             display: block;
         }
+        
+        /* Styles pour la barre de recherche */
+        .search-container {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #8B4513;
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
+        }
+        
+        .search-input::placeholder {
+            color: #999;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .no-search-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .no-search-results i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+        
+        .searchable-element {
+            transition: all 0.3s ease;
+        }
+        
+        .searchable-element.hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -50,7 +106,7 @@ if (session_status() == PHP_SESSION_NONE) {
                     <i class="fas fa-utensils"></i>
                     <span>Restaurants</span>
                 </a>
-                <a href="index.php?action=liste&filtre=chiottes" class="filter-btn <?php echo (isset($_GET['filtre']) && $_GET['filtre'] == 'chiottes') ? 'active' : ''; ?>">
+                <a href="index.php?action=liste&filtre=toilettes" class="filter-btn <?php echo (isset($_GET['filtre']) && $_GET['filtre'] == 'toilettes') ? 'active' : ''; ?>">
                     <i class="fas fa-restroom"></i>
                     <span>Toilettes</span>
                 </a>
@@ -85,10 +141,25 @@ if (session_status() == PHP_SESSION_NONE) {
                         Nombre d'éléments: <?php echo count($elements); ?>
                     </div>
                     
+                    <!-- Barre de recherche -->
+                    <?php if (in_array($_GET['filtre'] ?? 'spectacles', ['spectacles', 'restaurants'])): ?>
+                    <div class="search-container">
+                        <input type="text" 
+                               id="searchInput" 
+                               class="search-input" 
+                               placeholder="<?php echo ($_GET['filtre'] ?? 'spectacles') == 'spectacles' ? 'Rechercher un spectacle...' : 'Rechercher un restaurant...'; ?>"
+                               onkeyup="filterElements()">
+                        <div class="search-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    
+                    <div id="elementsContainer">
                     <?php foreach ($elements as $element): 
                         $isFavori = isset($_SESSION['favoris']) && in_array($element['id'], $_SESSION['favoris']);
                     ?>
-                        <div class="card" data-id="<?php echo $element['id']; ?>">
+                        <div class="card searchable-element" data-id="<?php echo $element['id']; ?>" data-name="<?php echo htmlspecialchars(strtolower($element['titre'])); ?>" data-description="<?php echo htmlspecialchars(strtolower($element['description'])); ?>" data-emplacement="<?php echo htmlspecialchars(strtolower($element['emplacement'])); ?>">
                             <div class="card-header">
                                 <div class="card-image" style="background: linear-gradient(135deg, 
                                     <?php 
@@ -307,6 +378,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                         </div>
                     <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </main>

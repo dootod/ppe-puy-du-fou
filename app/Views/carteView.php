@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        /* [Tous les styles CSS restent identiques] */
         #map {
             height: 400px;
             width: 100%;
@@ -71,7 +70,6 @@
         .marker-restaurant { border-color: #28a745; color: #28a745; }
         .marker-toilettes { border-color: #007bff; color: #007bff; }
         
-        /* Styles pour la légende sur une seule ligne */
         .carte-legende {
             background: white;
             padding: 15px;
@@ -148,7 +146,7 @@
                             <i class="fas fa-utensils"></i>
                             Restaurants
                         </button>
-                        <button class="filter-map-btn" data-filter="chiottes">
+                        <button class="filter-map-btn" data-filter="toilettes">
                             <i class="fas fa-restroom"></i>
                             Toilettes
                         </button>
@@ -190,12 +188,12 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // [Tout le code JavaScript reste identique]
         const pointsInteret = [
             <?php
             require_once __DIR__ . '/../models/listeModel.php';
             $model = new ListeModel();
             $points = $model->getAllPoints();
+            
             foreach ($points as $point) {
                 echo "{
                     id: {$point['id']},
@@ -245,7 +243,7 @@
                         iconClass = 'marker-restaurant';
                         icon = '<i class="fas fa-utensils"></i>';
                         break;
-                    case 'chiottes':
+                    case 'toilettes':
                         iconClass = 'marker-toilettes';
                         icon = '<i class="fas fa-restroom"></i>';
                         break;
