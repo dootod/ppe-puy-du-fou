@@ -38,50 +38,74 @@ class SpectacleModel {
     }
     
     public function createSpectacle($libelle, $duree_spectacle, $duree_attente, $coordonnees_gps) {
-        try {
-            $this->pdo->beginTransaction();
-            
-            // Valider le format des coordonnées GPS
-            if (!$this->isValidGPSCoordinates($coordonnees_gps)) {
-                throw new Exception("Format de coordonnées GPS invalide");
-            }
-            
-            // 1. Créer d'abord le lieu
-            $stmt_lieu = $this->pdo->prepare("INSERT INTO lieu (coordonnees_gps) VALUES (?)");
-            if (!$stmt_lieu->execute([$coordonnees_gps])) {
-                throw new Exception("Erreur lors de l'insertion du lieu");
-            }
-            $id_lieu = $this->pdo->lastInsertId();
-            
-            // 2. Créer le spectacle avec l'id_lieu généré
-            $stmt_spectacle = $this->pdo->prepare("
-                INSERT INTO spectacle (libelle, duree_spectacle, duree_attente, id_lieu) 
-                VALUES (?, ?, ?, ?)
-            ");
-            $result = $stmt_spectacle->execute([
-                $libelle, 
-                $duree_spectacle . ':00', // Ajouter les secondes
-                $duree_attente . ':00',   // Ajouter les secondes
-                $id_lieu
-            ]);
-            
-            if (!$result) {
-                throw new Exception("Erreur lors de l'insertion du spectacle");
-            }
-            
-            $this->pdo->commit();
-            return true;
-            
-        } catch (Exception $e) {
-            $this->pdo->rollBack();
-            error_log("Erreur création spectacle: " . $e->getMessage());
-            return false;
+    try {
+        $this->pdo->beginTransaction();
+        
+        // Debug: afficher les valeurs reçues
+        error_log("Valeurs reçues - libelle: $libelle, duree_spectacle: $duree_spectacle, duree_attente: $duree_attente, coords: $coordonnees_gps");
+        
+        // Valider le format des coordonnées GPS (version plus permissive)
+        if (!$this->isValidGPSCoordinates($coordonnees_gps)) {
+            throw new Exception("Format de coordonnées GPS invalide: $coordonnees_gps");
         }
+        
+        // 1. Créer d'abord le lieu
+        $stmt_lieu = $this->pdo->prepare("INSERT INTO lieu (coordonnees_gps) VALUES (?)");
+        if (!$stmt_lieu->execute([$coordonnees_gps])) {
+            $errorInfo = $stmt_lieu->errorInfo();
+            throw new Exception("Erreur lieu: " . $errorInfo[2]);
+        }
+        $id_lieu = $this->pdo->lastInsertId();
+        
+        // 2. Formater correctement les durées pour SQL
+        $duree_spectacle_formatted = $this->formatTimeForSQL($duree_spectacle);
+        $duree_attente_formatted = $this->formatTimeForSQL($duree_attente);
+        
+        // 3. Créer le spectacle avec l'id_lieu généré
+        $stmt_spectacle = $this->pdo->prepare("
+            INSERT INTO spectacle (libelle, duree_spectacle, duree_attente, id_lieu) 
+            VALUES (?, ?, ?, ?)
+        ");
+        
+        $result = $stmt_spectacle->execute([
+            $libelle, 
+            $duree_spectacle_formatted,
+            $duree_attente_formatted,
+            $id_lieu
+        ]);
+        
+        if (!$result) {
+            $errorInfo = $stmt_spectacle->errorInfo();
+            throw new Exception("Erreur spectacle: " . $errorInfo[2]);
+        }
+        
+        $this->pdo->commit();
+        return true;
+        
+    } catch (Exception $e) {
+        $this->pdo->rollBack();
+        error_log("Erreur création spectacle: " . $e->getMessage());
+        return false;
+    }
     }
 
+    // Nouvelle méthode pour formater le temps
+    private function formatTimeForSQL($time) {
+        // Si le format est déjà HH:MM:SS, le garder
+        if (preg_match('/^\d{1,2}:\d{2}:\d{2}$/', $time)) {
+            return $time;
+        }
+        // Si c'est HH:MM, ajouter :00
+        if (preg_match('/^\d{1,2}:\d{2}$/', $time)) {
+            return $time . ':00';
+        }
+        return $time;
+    }
+
+    // Validation GPS plus permissive
     private function isValidGPSCoordinates($coords) {
-        // Validation basique des coordonnées GPS
-        return preg_match('/^-?\d+\.\d+,\s*-?\d+\.\d+$/', $coords);
+        // Accepte: "lat, lng" ou "lat,lng" avec des nombres décimaux
+        return preg_match('/^-?\d+\.?\d*,\s*-?\d+\.?\d*$/', trim($coords));
     }
     
     public function updateSpectacle($id, $libelle, $duree_spectacle, $duree_attente, $coordonnees_gps) {
