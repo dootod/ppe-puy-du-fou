@@ -1,7 +1,20 @@
 <?php
-
 function getPDO(){
-    if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['SERVER_NAME'] == 'localhost') {
+    // Configuration pour environnement CLI (terminal)
+    if (php_sapi_name() === 'cli' || !isset($_SERVER['HTTP_HOST'])) {
+        $dbHost = 'localhost';
+        $dbName = 'bdd';
+        $dbUser = 'root';
+        $dbPassword = '';
+    }
+    // Configuration pour navigateur
+    elseif ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['SERVER_NAME'] == 'localhost') {
+        $dbHost = 'localhost';
+        $dbName = 'bdd';
+        $dbUser = 'root';
+        $dbPassword = '';
+    } else {
+        // Environnement de production
         $dbHost = 'localhost';
         $dbName = 'bdd';
         $dbUser = 'root';
@@ -23,3 +36,4 @@ function getPDO(){
         return null;
     }
 }
+?>
