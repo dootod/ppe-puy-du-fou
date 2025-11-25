@@ -30,4 +30,6 @@ echo "4. Testez le middleware mobile\n";
 // php test_complet.php
 
 //powershell
-// cd C:\laragon\www\ppe\ppe-puy-du-fou\tests PS C:\laragon\www\ppe\ppe-puy-du-fou\tests> & "C:\laragon\bin\php\php-8.1.10-Win32-vs16-x64\php.exe" test_complet.php
+// cd C:\laragon\www\ppe\ppe-puy-du-fou\tests
+& "C:\laragon\bin\php\php-8.1.10-Win32-vs16-x64\php.exe" test_complet.php
+
