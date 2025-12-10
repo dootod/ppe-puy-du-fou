@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/database_puy.php';
 function utilisateurExistant($email) {
     $pdo = getPDO();
     $requete = $pdo->prepare("SELECT id_utilisateur FROM utilisateur WHERE email = :email");

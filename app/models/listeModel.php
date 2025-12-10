@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/database_puy.php';
 class ListeModel {
     
     public function getElements($filtre) {
