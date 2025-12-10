@@ -1,12 +1,4 @@
 <?php
-if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['SERVER_NAME'] == 'localhost') {
-    // Environnement local - depuis app/models/
-    require_once __DIR__ . '/../../config/database_puy.php';
-} else {
-    // Environnement de production/hebergé
-    require_once '/home/ewenevh/config/database_puy.php';
-}
-
 function utilisateurExistant($email) {
     $pdo = getPDO();
     $requete = $pdo->prepare("SELECT id_utilisateur FROM utilisateur WHERE email = :email");
