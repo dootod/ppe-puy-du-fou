@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `bdd`
+-- Database: `db672809222`
 --
 
 -- --------------------------------------------------------
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `choisir` (
   `id_spectacle` int NOT NULL,
   `id_visite` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `choisir`
@@ -53,7 +53,7 @@ INSERT INTO `choisir` (`id_spectacle`, `id_visite`) VALUES
 CREATE TABLE `distance` (
   `id_lieu` int NOT NULL,
   `id_lieu_1` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `distance`
@@ -81,7 +81,7 @@ CREATE TABLE `etape` (
   `id_etape` int NOT NULL,
   `id_parcours` int NOT NULL,
   `id_seance` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `etape`
@@ -105,7 +105,7 @@ CREATE TABLE `jours` (
   `id_jours` varchar(50) NOT NULL,
   `heure_ouverture` time DEFAULT NULL,
   `heure_fermeture` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `jours`
@@ -129,7 +129,7 @@ INSERT INTO `jours` (`id_jours`, `heure_ouverture`, `heure_fermeture`) VALUES
 CREATE TABLE `lieu` (
   `id_lieu` int NOT NULL,
   `coordonnees_gps` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lieu`
@@ -158,7 +158,7 @@ CREATE TABLE `parcours` (
   `id_parcours` int NOT NULL,
   `duree` time DEFAULT NULL,
   `id_visite` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `parcours`
@@ -179,7 +179,7 @@ CREATE TABLE `seance` (
   `heure_debut` time DEFAULT NULL,
   `heure_fin` time DEFAULT NULL,
   `id_spectacle` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `seance`
@@ -210,7 +210,7 @@ CREATE TABLE `spectacle` (
   `duree_spectacle` time NOT NULL,
   `duree_attente` time NOT NULL,
   `id_lieu` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `spectacle`
@@ -243,7 +243,7 @@ CREATE TABLE `utilisateur` (
   `prenom` varchar(50) NOT NULL,
   `type_profil` varchar(50) NOT NULL,
   `vitesse_marche` decimal(15,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `utilisateur`
@@ -265,7 +265,7 @@ CREATE TABLE `visite` (
   `id_visite` int NOT NULL,
   `date_` date DEFAULT NULL,
   `id_utilisateur` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `visite`
